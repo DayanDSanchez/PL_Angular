@@ -1,0 +1,58 @@
+<div class="row justify-content-center mt-4">
+  <div class="col-md-6">
+    <form (ngSubmit)="AddOrUpdateUsuario()" #usuarioForm="ngForm" class="p-4 border rounded bg-light shadow">
+      <h4 class="text-center mb-4">{{ usuario.idUsuario ? 'Editar Usuario' : 'Agregar Usuario' }}</h4>
+
+      <div class="mb-3">
+        <label for="Nombre" class="form-label">Nombre:</label>
+        <input id="Nombre"
+               name="Nombre"
+               [(ngModel)]="usuario.Nombre"
+               required
+               type="text"
+               class="form-control"
+               placeholder="Ingresa el nombre" />
+      </div>
+
+      <div class="mb-3">
+        <label for="ApellidoPaterno" class="form-label">Apellido Paterno:</label>
+        <input id="ApellidoPaterno"
+               name="ApellidoPaterno"
+               [(ngModel)]="usuario.ApellidoPaterno"
+               required
+               type="text"
+               class="form-control"
+               placeholder="Ingresa el apellido paterno" />
+      </div>
+
+      <div class="mb-3">
+        <label for="ApellidoMaterno" class="form-label">Apellido Materno:</label>
+        <input id="ApellidoMaterno"
+               name="ApellidoMaterno"
+               [(ngModel)]="usuario.ApellidoMaterno"
+               required
+               type="text"
+               class="form-control"
+               placeholder="Ingresa el apellido materno" />
+      </div>
+
+      <div class="mb-3">
+        <label for="Edad" class="form-label">Edad:</label>
+        <input id="Edad"
+               name="Edad"
+               [(ngModel)]="usuario.Edad"
+               required
+               type="text"
+               class="form-control"
+               placeholder="Ingresa la edad" />
+      </div>
+
+      <div class="d-grid">
+        <button type="submit" [disabled]="!usuarioForm.form.valid" class="btn btn-primary">
+          {{ usuario.idUsuario ? 'Actualizar Usuario' : 'Guardar Usuario' }}
+        </button>
+        <button routerLink="/getall" class="btn btn-danger mt-2">Regresar</button>
+      </div>
+    </form>
+  </div>
+</div>
