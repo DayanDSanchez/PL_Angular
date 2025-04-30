@@ -11,7 +11,8 @@ interface Usuario {
   Nombre: string;
   ApellidoPaterno: string;
   ApellidoMaterno: string;
-  Edad: string;
+  Imagen?: string;
+  FechaNacimiento: string;
 }
 
 @Component({
@@ -29,8 +30,12 @@ export class FormComponent {
     Nombre: '',
     ApellidoPaterno: '',
     ApellidoMaterno: '',
-    Edad: ''
+    Imagen: '',
+    FechaNacimiento: ''
   };
+
+  archivoSeleccionado: File | null = null; // <-- Agregas esta propiedad para guardar el archivo
+  imagenPreview: string | ArrayBuffer | null = null;
 
   constructor(
     private http: HttpClient,
@@ -44,6 +49,24 @@ export class FormComponent {
       this.GetUsuarioById(Number(idUsuario)); // Convertimos a int
     }
   }
+
+  // Aquí agregas el método del archivo
+  onFileSelected(event: any) {
+    const file: File = event.target.files[0];
+
+    if (file) {
+      this.archivoSeleccionado = file;
+
+      const reader = new FileReader();
+      reader.onload = (e: any) => {
+        const base64 = e.target.result.split(',')[1];
+        this.usuario.Imagen = base64;
+        this.imagenPreview = e.target.result; // <-- Aquí actualizamos la imagen en el formulario
+      };
+      reader.readAsDataURL(file);
+    }
+  }
+
 
   AddOrUpdateUsuario() {
     if (this.usuario.idUsuario) {
@@ -59,14 +82,20 @@ export class FormComponent {
     this.http.get<any>(`${this.API_URI}/Usuario/${id}`).subscribe(
       (response) => {
         console.log('Usuario cargado:', response);
+
         if (response.correct && response.object) {
           this.usuario = {
             idUsuario: response.object.idUsuario,
             Nombre: response.object.nombre,
             ApellidoPaterno: response.object.apellidoPaterno,
             ApellidoMaterno: response.object.apellidoMaterno,
-            Edad: response.object.edad
+            Imagen: response.object.imagen,
+            FechaNacimiento: response.object.fechaNacimiento,
           };
+
+          if (this.usuario.Imagen) {
+            this.imagenPreview = 'data:image/jpeg;base64,' + this.usuario.Imagen;
+          }
         } else {
           Swal.fire({
             icon: 'error',
@@ -144,9 +173,12 @@ export class FormComponent {
       Nombre: '',
       ApellidoPaterno: '',
       ApellidoMaterno: '',
-      Edad: ''
+      FechaNacimiento: ''
     };
+    this.imagenPreview = null;
+    this.archivoSeleccionado = null;
   }
- 
+
+
 }
 

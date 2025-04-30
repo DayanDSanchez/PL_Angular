@@ -37,14 +37,28 @@
       </div>
 
       <div class="mb-3">
-        <label for="Edad" class="form-label">Edad:</label>
-        <input id="Edad"
-               name="Edad"
-               [(ngModel)]="usuario.Edad"
-               required
-               type="text"
-               class="form-control"
-               placeholder="Ingresa la edad" />
+        <div class="form-group">
+          <label for="fechaNacimiento" class="form-label">Fecha de Nacimiento</label>
+          <input type="date"
+                 id="fechaNacimiento"
+                 class="form-control"
+                 [(ngModel)]="usuario.FechaNacimiento"
+                 name="fechaNacimiento" />
+        </div>
+      </div>
+
+
+      <div *ngIf="imagenPreview" class="mb-3">
+        <img [src]="imagenPreview" alt="Imagen de usuario" style="max-width: 200px; max-height: 200px;" />
+      </div>
+
+      <div class="mb-3">
+        <label for="Imagen" class="form-label">Imagen</label>
+        <input id="Imagen"
+               name="Imagen"
+               (change)="onFileSelected($event)"
+               type="file"
+               class="form-control" />
       </div>
 
       <div class="d-grid">
@@ -56,3 +70,4 @@
     </form>
   </div>
 </div>
+

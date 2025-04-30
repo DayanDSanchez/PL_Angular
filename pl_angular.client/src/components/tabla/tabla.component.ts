@@ -7,6 +7,7 @@ import Swal from 'sweetalert2';
 @Component({
   selector: 'app-tabla',
   templateUrl: './tabla.component.html',
+  standalone: false,
   styleUrls: ['./tabla.component.css']
 })
 export class TablaComponent implements OnInit {
@@ -16,11 +17,13 @@ export class TablaComponent implements OnInit {
   toastr: any;
 
   usuario = {
+    Imagen: '',
     Nombre: '',
     ApellidoPaterno: '',
     ApellidoMaterno: '',
-    Edad: ''
+    FechaNacimiento: ''
   };
+  imagenPreview: string | ArrayBuffer | null = null;
 
   constructor(private http: HttpClient) { }
 
@@ -33,6 +36,7 @@ export class TablaComponent implements OnInit {
       (result) => {
         console.log(result);
         this.Usuarios = result;
+        console.log(result)
       },
       (error) => console.error(error)
     );

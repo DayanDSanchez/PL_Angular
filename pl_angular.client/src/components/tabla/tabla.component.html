@@ -6,10 +6,11 @@
   <thead>
     <tr>
       <th>Editar</th>
+      <th>Imagen</th>
       <th>Nombre</th>
       <th>Apellido Paterno</th>
       <th>Apellido Materno</th>
-      <th>Edad</th>
+      <th>Fecha de Nacimiento</th>
       <th>Eliminar</th>
     </tr>
   </thead>
@@ -21,10 +22,15 @@
         </a>
       </td>
       <!--<td>{{Usuario.idUsuario}}</td>-->
+      <td>
+        <div *ngIf="imagenPreview" class="mb-3">
+          <img [src]="imagenPreview" alt="Imagen de usuario" style="max-width: 200px; max-height: 200px;" />
+        </div>
+      </td>
       <td>{{Usuario.nombre}}</td>
       <td>{{Usuario.apellidoPaterno}}</td>
       <td>{{Usuario.apellidoMaterno}}</td>
-      <td>{{Usuario.edad}}</td>
+      <td>{{Usuario.fechaNacimiento}}</td>
       <!--<td>
         <button class=" btn btn-danger"><i class="far fa-trash-alt"></i></button>
       </td>-->

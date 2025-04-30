@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace DL;
+namespace DL.Models;
 
 public partial class Usuario
 {
@@ -12,6 +12,8 @@ public partial class Usuario
     public string? ApellidoPaterno { get; set; }
 
     public string? ApellidoMaterno { get; set; }
+
+    public string? Edad { get; set; }
 
     public byte[]? Imagen { get; set; }
 

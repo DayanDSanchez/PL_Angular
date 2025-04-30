@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
 
-namespace DL;
+namespace DL.Models;
 
 public partial class DayanUsuarioContext : DbContext
 {
@@ -34,6 +34,9 @@ public partial class DayanUsuarioContext : DbContext
                 .IsUnicode(false);
             entity.Property(e => e.ApellidoPaterno)
                 .HasMaxLength(50)
+                .IsUnicode(false);
+            entity.Property(e => e.Edad)
+                .HasMaxLength(10)
                 .IsUnicode(false);
             entity.Property(e => e.Nombre)
                 .HasMaxLength(50)

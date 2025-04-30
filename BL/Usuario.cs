@@ -1,4 +1,6 @@
-﻿namespace BL
+﻿using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
+
+namespace BL
 {
     public class Usuario
     {
@@ -14,7 +16,9 @@
                     usuarioDL.Nombre = usuario.Nombre;
                     usuarioDL.ApellidoPaterno = usuario.ApellidoPaterno;
                     usuarioDL.ApellidoMaterno = usuario.ApellidoMaterno;
-                    usuarioDL.Edad = usuario.Edad;
+                    usuarioDL.Imagen = usuario.ImagenBytes;
+                    usuarioDL.FechaNacimiento = usuario.FechaNacimiento != null ? DateOnly.FromDateTime(Convert.ToDateTime(usuario.FechaNacimiento)) : null;
+
 
                     context.Usuarios.Add(usuarioDL);
                     context.SaveChanges();
@@ -31,7 +35,6 @@
             }
             return result;
         }
-
         public static ML.Result Update(ML.Usuario usuario)
         {
             ML.Result result = new ML.Result();
@@ -48,7 +51,15 @@
                         query.Nombre = usuario.Nombre;
                         query.ApellidoPaterno = usuario.ApellidoPaterno;
                         query.ApellidoMaterno = usuario.ApellidoMaterno;
-                        query.Edad = usuario.Edad;
+
+                        // Convertir la imagen Base64 a bytes
+                        if (!string.IsNullOrEmpty(usuario.Imagen))
+                        {
+                            byte[] imagenBytes = Convert.FromBase64String(usuario.Imagen);
+                            query.Imagen = imagenBytes;
+                        }
+                        query.FechaNacimiento = usuario.FechaNacimiento != null ? DateOnly.FromDateTime(Convert.ToDateTime(usuario.FechaNacimiento)) : null;
+
 
                         context.SaveChanges();
                         result.Correct = true;
@@ -63,7 +74,6 @@
             }
             return result;
         }
-
         public static ML.Result Delete(int IdUsuario)
         {
             ML.Result result = new ML.Result();
@@ -88,7 +98,6 @@
             }
             return result;
         }
-
         public static ML.Result GetAll()
         {
             ML.Result result = new ML.Result();
@@ -103,7 +112,8 @@
                                              usuario.Nombre,
                                              usuario.ApellidoPaterno,
                                              usuario.ApellidoMaterno,
-                                             usuario.Edad
+                                             usuario.FechaNacimiento,
+                                             usuario.Imagen
                                          }).ToList();
                     if (listaUsuarios.Count > 0)
                     {
@@ -113,11 +123,15 @@
                         {
                             ML.Usuario usuarioItem = new ML.Usuario();
                             usuarioItem.IdUsuario = usuario.IdUsuario;
+
                             usuarioItem.Nombre = usuario.Nombre;
                             usuarioItem.ApellidoPaterno = usuario.ApellidoPaterno;
                             usuarioItem.ApellidoMaterno = usuario.ApellidoMaterno;
-                            usuarioItem.Edad = usuario.Edad;
-
+                            usuarioItem.FechaNacimiento = Convert.ToString(usuario.FechaNacimiento);
+                            if (usuario.Imagen != null)
+                            {
+                                usuarioItem.Imagen = Convert.ToBase64String(usuario.Imagen);
+                            }
                             result.Objects.Add(usuarioItem);
                         }
                         result.Correct = true;
@@ -158,7 +172,14 @@
                         usuario.Nombre = query.Nombre;
                         usuario.ApellidoPaterno = query.ApellidoPaterno;
                         usuario.ApellidoMaterno = query.ApellidoMaterno;
-                        usuario.Edad = query.Edad;
+                        if (query.Imagen != null)
+                        {
+                            usuario.Imagen = Convert.ToBase64String(query.Imagen);
+                        }
+                        if (query.FechaNacimiento != null)
+                        {
+                            usuario.FechaNacimiento = query.FechaNacimiento.Value.ToString("yyyy-MM-dd");
+                        }
 
                         result.Object = usuario;
                         result.Correct = true;

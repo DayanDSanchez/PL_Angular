@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.IdentityModel.Tokens;
 
 namespace PL_Angular.Server.Controllers
 {
@@ -29,7 +30,16 @@ namespace PL_Angular.Server.Controllers
         [HttpPost]
         public IActionResult Post([FromBody] ML.Usuario usuario)
         {
-            ML.Result result = BL.Usuario.Add(usuario);
+            ML.Result result = new ML.Result();
+
+            if (!string.IsNullOrEmpty(usuario.Imagen))
+            {
+                // Convertir Base64 a byte[]
+                usuario.ImagenBytes = Convert.FromBase64String(usuario.Imagen);
+            }
+
+            result = BL.Usuario.Add(usuario);
+
             if (result.Correct)
             {
                 return Ok(result);

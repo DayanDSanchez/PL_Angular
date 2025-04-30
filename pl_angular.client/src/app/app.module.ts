@@ -13,6 +13,8 @@ import { FormComponent } from '../components/form/form.component';
 import { ReactiveFormsModule } from '@angular/forms';
 
 
+
+
 @NgModule({
   declarations: [
     AppComponent, NavBar, TablaComponent, FormComponent,
